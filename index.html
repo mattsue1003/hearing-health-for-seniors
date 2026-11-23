@@ -139,8 +139,14 @@ table.tb tr:nth-child(even) td{background:var(--green-soft)}
 .beats span{display:inline-grid; place-items:center; min-width:2.2em; height:2.2em; padding:0 .45em; border:var(--b3); border-radius:14px; background:#fff; box-shadow:var(--sh3); font-weight:900; font-size:clamp(20px,2vw,32px)}
 .beats span.tri{background:var(--amber)}
 .modal.vid .frame{position:relative}
-.modal.vid.guess .frame::before{content:"🎵 猜猜看，這是哪一首？"; position:absolute; left:0; right:0; top:0; height:18%; background:#111; color:#fff; display:grid; place-items:center; font-weight:900; font-size:clamp(20px,2.4vw,36px); z-index:2}
-.modal.vid.guess .frame::after{content:""; position:absolute; right:0; bottom:0; width:30%; height:14%; background:#111; z-index:2}
+.cover{position:absolute; inset:0; z-index:3; background:#111 radial-gradient(circle, rgba(255,255,255,.08) 1.3px, transparent 1.5px) 0 0/22px 22px; color:#fff; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:18px; text-align:center; padding:20px}
+.cover .note{font-size:clamp(28px,4vw,64px); font-weight:900}
+.cover .ear{font-size:clamp(60px,10vw,140px); line-height:1; animation:pulse 1.4s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.12)}}
+.cover .cbtns{display:flex; gap:14px; flex-wrap:wrap; justify-content:center}
+.cover .cbtn{background:var(--amber); color:var(--ink); border:var(--b3); border-radius:999px; padding:12px 26px; font-weight:900; font-size:clamp(18px,1.8vw,28px); box-shadow:var(--sh5)}
+.cover .cbtn.ghost{background:#fff}
+.cover small{font-size:clamp(14px,1.2vw,18px); color:#ccc; font-weight:700}
 @media (max-width:900px){.songs{grid-template-columns:repeat(3,1fr)}}
 @media (max-width:560px){.songs{grid-template-columns:repeat(2,1fr)}}
 .song{background:#fff; border:var(--b3); border-radius:14px; box-shadow:var(--sh3); padding:14px 10px; text-align:center; font-weight:900; line-height:1.3; display:grid; gap:4px}
@@ -974,9 +980,14 @@ table.tb tr:nth-child(even) td{background:var(--green-soft)}
     body.style.zoom=zm; body.style.width=Math.min(natural, boxW/zm)+'px';
   });
   // video
+  function ytCmd(func){const f=document.querySelector('#vidFrame iframe'); if(f)f.contentWindow.postMessage(JSON.stringify({event:'command',func:func,args:[]}),'*');}
   function playVideo(id,cap,guess){
     document.getElementById('vid').classList.toggle('guess',!!guess);
-    document.getElementById('vidFrame').innerHTML='<iframe src="https://www.youtube-nocookie.com/embed/'+id+'?autoplay=1&rel=0&modestbranding=1" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen title="'+(cap||'影片')+'"></iframe>';
+    const extra=guess?'&enablejsapi=1&origin='+encodeURIComponent(location.origin):'';
+    document.getElementById('vidFrame').innerHTML='<iframe src="https://www.youtube-nocookie.com/embed/'+id+'?autoplay=1&rel=0&modestbranding=1'+extra+'" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen title="'+(cap||'影片')+'"></iframe>'+
+      (guess?'<div class="cover"><div class="ear">👂</div><div class="note">仔細聽，這是哪一首？</div><div class="cbtns"><button class="cbtn" data-act="pause">⏸ 暫停</button><button class="cbtn" data-act="play">▶ 繼續</button><button class="cbtn ghost" data-act="show">👁 公布畫面</button></div><small>畫面先遮起來只放聲音，猜到答案再按「公布畫面」</small></div>':'');
+    const cv=document.querySelector('#vidFrame .cover');
+    if(cv)cv.addEventListener('click',e=>{const b=e.target.closest('[data-act]'); if(!b)return; const a=b.dataset.act; if(a==='show')cv.remove(); else ytCmd(a==='pause'?'pauseVideo':'playVideo');});
     document.getElementById('vidCap').textContent=cap||'';
     document.getElementById('vidLink').href='https://www.youtube.com/watch?v='+id;
     open('vid');
