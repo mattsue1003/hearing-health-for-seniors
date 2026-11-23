@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
-<meta name="version" content="v4 2026-11-23">
+<meta name="version" content="v5 2026-11-23">
 <title>耳朵靈光不漏聽｜長者聽力保健</title>
 <meta name="description" content="網頁型簡報：為什麼要顧好聽力、搓手聽力測試、聽力警訊、護耳操、耳垢與耳朵日常照顧、耳鳴／耳石暈眩／耳中風、助聽器選配與政府補助。可上下捲動，也可一頁一頁切換，文字區塊點一下即可放大。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -108,13 +108,10 @@ table.tb tr:nth-child(even) td{background:var(--green-soft)}
 .phone{font-size:clamp(40px,5vw,76px); font-weight:900; letter-spacing:.02em; color:#D97706; line-height:1.1}
 
 /* zoomable */
-.z{cursor:zoom-in; position:relative}
-.zbtn{position:absolute; right:12px; bottom:-13px; z-index:2; background:#fff; color:var(--grey); border:var(--b2); border-radius:999px; padding:1px 10px; font-size:.62rem; font-weight:900; line-height:1.6; box-shadow:2px 2px 0 var(--line); white-space:nowrap}
-.zbtn:hover{background:var(--amber); color:var(--ink)}
-.fig.fit .zbtn{right:0; bottom:-6px}
-.lead.z{padding-right:4.6em}
-.lead.z .zbtn{bottom:auto; top:50%; transform:translateY(-50%); right:0}
-.dark .zbtn{box-shadow:2px 2px 0 #000}
+.z{position:relative}
+/* ear-shaped cursor: amber by default, green on anything clickable */
+html,body{cursor:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2234%22 height=%2234%22 viewBox=%220 0 34 34%22%3E%3Cpath d=%22M11 5c-6 0-8 7-5 12 2 3 2.5 6 3.5 10 .8 3.5 6.5 4 8 1 1-2 3-4 5.5-7C28 15 26 5 18 5Z%22 fill=%22%23FFB13B%22 stroke=%22%23111%22 stroke-width=%222.4%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M12 12c3-3 8-2 8 2 0 3-3 3.5-3.5 6.5%22 fill=%22none%22 stroke=%22%23111%22 stroke-width=%222.4%22 stroke-linecap=%22round%22/%3E%3C/svg%3E") 7 5, auto}
+a,button,.z,.video,.check li,.opt,.song,.gcard,[data-yt],[data-search],.toc a{cursor:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2234%22 height=%2234%22 viewBox=%220 0 34 34%22%3E%3Cpath d=%22M11 5c-6 0-8 7-5 12 2 3 2.5 6 3.5 10 .8 3.5 6.5 4 8 1 1-2 3-4 5.5-7C28 15 26 5 18 5Z%22 fill=%22%2317B169%22 stroke=%22%23111%22 stroke-width=%222.4%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M12 12c3-3 8-2 8 2 0 3-3 3.5-3.5 6.5%22 fill=%22none%22 stroke=%22%23111%22 stroke-width=%222.4%22 stroke-linecap=%22round%22/%3E%3C/svg%3E") 7 5, pointer}
 
 /* video */
 .video{position:relative; border:var(--b3); border-radius:var(--radius); overflow:hidden; box-shadow:var(--sh7); background:#000; cursor:pointer; aspect-ratio:16/9}
@@ -189,7 +186,7 @@ table.tb tr:nth-child(even) td{background:var(--green-soft)}
 #zoomBody .cards,#zoomBody .check,#zoomBody .opts{grid-template-columns:1fr}
 #zoomBody .card{box-shadow:none}
 #zoomBody .beats span{font-size:40px}
-.modal .box .z{cursor:default} .modal .box .zbtn{display:none}
+.modal .box .z{cursor:inherit}
 .modal .x{position:absolute; right:14px; top:14px; width:56px; height:56px; border-radius:50%; background:var(--amber); border:var(--b3); box-shadow:var(--sh3); font-size:1.4rem; font-weight:900; display:grid; place-items:center; z-index:2}
 .modal.vid .box{background:#000; padding:0; border-color:#fff; max-width:1500px; overflow:hidden}
 .modal.vid .frame{aspect-ratio:16/9; width:100%; background:#000}
@@ -955,7 +952,7 @@ table.tb tr:nth-child(even) td{background:var(--green-soft)}
 <!-- reveal modal -->
 <div class="modal" id="reveal" aria-hidden="true"><div class="box rv"><button class="x" aria-label="關閉">✕</button><div id="rvBody"></div></div></div>
 <!-- toc modal -->
-<div class="modal" id="toc" aria-hidden="true"><div class="box"><button class="x" aria-label="關閉">✕</button><h3 style="margin-bottom:12px">目錄 <small style="font-size:.5em;color:var(--muted);font-weight:700">v4</small></h3><div class="toc" id="tocList"></div></div></div>
+<div class="modal" id="toc" aria-hidden="true"><div class="box"><button class="x" aria-label="關閉">✕</button><h3 style="margin-bottom:12px">目錄 <small style="font-size:.5em;color:var(--muted);font-weight:700">v5</small></h3><div class="toc" id="tocList"></div></div></div>
 
 <script>
 (function(){
@@ -1001,12 +998,9 @@ table.tb tr:nth-child(even) td{background:var(--green-soft)}
   function open(id){const m=document.getElementById(id);m.classList.add('on');m.setAttribute('aria-hidden','false');}
   function close(id){const m=document.getElementById(id);m.classList.remove('on');m.setAttribute('aria-hidden','true');if(id==='vid')document.getElementById('vidFrame').innerHTML='';}
   document.querySelectorAll('.modal').forEach(m=>{m.addEventListener('click',e=>{if(e.target===m||e.target.classList.contains('x'))close(m.id);});});
-  // zoom button on every zoomable block
-  document.querySelectorAll('.z').forEach(z=>{const b=document.createElement('button');b.type='button';b.className='zbtn';b.textContent='🔍 放大';b.title='放大這一塊';z.appendChild(b);});
-  // zoom: click the 🔍 button or anywhere on a .z (but not other buttons/links inside)
+  // zoom: click anywhere on a .z (but not buttons/links inside)
   document.addEventListener('click',e=>{
-    const z=e.target.closest('.z'); if(!z||e.target.closest('.modal'))return;
-    if(!e.target.closest('.zbtn')&&e.target.closest('button,a'))return;
+    const z=e.target.closest('.z'); if(!z||e.target.closest('.modal')||e.target.closest('button,a'))return;
     const body=document.getElementById('zoomBody'), box=body.parentElement;
     body.innerHTML=z.outerHTML; open('zoom');
     const boxW=box.clientWidth-2*parseFloat(getComputedStyle(box).paddingLeft);
